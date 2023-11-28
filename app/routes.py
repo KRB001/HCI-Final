@@ -1,7 +1,13 @@
 from app import app
 from flask import request
+from dnd_character.classes import *
 
 
-@app.route('/roll/<player_id>-<stat>-<mod>', methods=['GET'])
-def roll(player_id, stat, mod):
-    return "INPUT:\n Player ID: " + player_id + "\n Stat: " + stat + "\n Modifier: " + mod
+@app.route('/updateplayer/<player_id>-<name>-<level>', methods=['GET'])
+def create_player(player_id, name, level):
+    new_char = Barbarian(
+        name="name",
+        level=int(level)
+    )
+
+    return "New " + new_char.class_name + " " + new_char.name + " has been created with level " + new_char.level
