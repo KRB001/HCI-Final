@@ -95,6 +95,14 @@ class Player(db.Model):
             self.level = 20
             self.xp = self.xp - 355000
 
+class PlayerClass(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    hit_die = db.Column(db.Integer)
+class PlayerRace(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+
 class UserToPlayer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
