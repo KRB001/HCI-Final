@@ -2,16 +2,9 @@ from datetime import datetime
 from app import db
 from flask_login import UserMixin
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), index=True, unique=True)
-    email = db.Column(db.String(256), unique=True)
-    pw_hash = db.Column(db.String(128))
-
-    players = db.relationship('Player', backref='user', lazy='dynamic')
-
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(128), index=True)
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
     str = db.Column(db.Integer)
@@ -95,13 +88,27 @@ class Player(db.Model):
             self.level = 20
             self.xp = self.xp - 355000
 
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(128), index=True, unique=True)
+    email = db.Column(db.String(256), unique=True)
+    pw_hash = db.Column(db.String(128))
+
+    players = db.relationship('Player', backref='user', lazy='dynamic')
+
+    def __repr__(self):
+        return '<User {}'.format(self.name)
+
 class PlayerClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     hit_die = db.Column(db.Integer)
+
+
 class PlayerRace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
+
 
 class UserToPlayer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
