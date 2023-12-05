@@ -6,3 +6,8 @@ from flask import request
 def create_player(player_id, name, level):
 
     return ""
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return ""
