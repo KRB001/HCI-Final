@@ -1,5 +1,8 @@
 from datetime import datetime
-from app import db
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db, login
 from flask_login import UserMixin
 
 class User(UserMixin, db.Model):
@@ -10,8 +13,20 @@ class User(UserMixin, db.Model):
 
     players = db.relationship('Player', backref='user', lazy='dynamic')
 
+    def set_password(self, password):
+        self.pw_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(128), index=True)
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
     str = db.Column(db.Integer)
