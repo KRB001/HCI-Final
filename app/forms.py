@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, IntegerField, DateField, PasswordField, BooleanField, \
     SelectMultipleField, SelectField, RadioField
-from wtforms.validators import DataRequired, ValidationError, NumberRange, EqualTo
+from wtforms.validators import DataRequired, ValidationError, NumberRange, EqualTo, Email
 from app.models import User, Player, PlayerClass, PlayerRace
 
 class CreateCharacterForm(FlaskForm):
