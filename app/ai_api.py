@@ -1,5 +1,4 @@
 from openai import OpenAI
-import os
 
 client = OpenAI()
 
@@ -20,10 +19,6 @@ def write_description():
             {"role": "user",
              "content": "Compose a character bio that is 100 words considering the character is named {}, is "
                         "a {} by race, {} by class, and has the alignment of {}. Also please consider these notes "
-                        "from the user when writing about this character: {}... also can you format your response "
-                        "as a dictionary?".format(name, race, char_class, alignment, notes)}
-        ]
-    )
+                        "from the user when writing about this character: {}".format(name, race, char_class, alignment, notes)}])
 
-    print(completion.choices[0].message)
     return completion.choices[0].message
