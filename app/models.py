@@ -109,16 +109,6 @@ class Player(db.Model):
             self.level = 20
             self.xp = self.xp - 355000
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), index=True, unique=True)
-    email = db.Column(db.String(256), unique=True)
-    pw_hash = db.Column(db.String(128))
-
-    players = db.relationship('Player', backref='user', lazy='dynamic')
-
-    def __repr__(self):
-        return '<User {}'.format(self.name)
 
 class PlayerClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
