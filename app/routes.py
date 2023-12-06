@@ -2,7 +2,7 @@ from app import app, db
 from flask import request, redirect, url_for, flash, render_template
 from app.models import *
 import datetime
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm
 from app.ai_api import write_description
 
@@ -11,10 +11,13 @@ def main():
     ai = write_description()
     return render_template('main.html', ai = ai)
 
-@app.route('/updateplayer/<player_id>-<name>-<level>', methods=['GET'])
-def create_player(player_id, name, level):
 
-    return ""
+@app.route('/updateplayer/<player_id>', methods=['GET'])
+@login_required
+def update_player(player_id):
+    user_id = current_user.id
+
+    player = Player.query.filter_by(id=id).first()
 
 @app.route("/resetdb", methods=['GET'])
 def reset_db():
