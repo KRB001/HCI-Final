@@ -8,8 +8,8 @@ from app.ai_api import write_description
 
 @app.route('/')
 def main():
-    write_description()
-    return render_template('main.html')
+    ai = write_description()
+    return render_template('main.html', ai = ai)
 
 @app.route('/updateplayer/<player_id>-<name>-<level>', methods=['GET'])
 def create_player(player_id, name, level):
