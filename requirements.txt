@@ -2,7 +2,10 @@ alembic==1.12.1
 blinker==1.7.0
 click==8.1.7
 dnd-character==23.7.29
+email-validator==2.1.0.post1
 Flask==3.0.0
+Flask-Bootstrap==3.3.7.1
+Flask-Bootstrap4==4.0.2
 Flask-Login==0.6.3
 Flask-Migrate==4.0.5
 Flask-SQLAlchemy==3.1.1
