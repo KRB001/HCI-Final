@@ -3,21 +3,19 @@ from flask import request, redirect, url_for, flash, render_template
 from app.models import *
 import datetime
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm
-from app.ai_api import write_description
+from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
+#from app.ai_api import write_description
 
-@app.route('/')
-def main():
-    ai = write_description()
-    return render_template('main.html', ai = ai)
+#@app.route('/')
+#def main():
+#    ai = write_description()
+#    return render_template('main.html', ai = ai)
 
 
 @app.route('/updateplayer/<player_id>', methods=['GET'])
 @login_required
 def update_player(player_id):
-    user_id = current_user.id
-
-    player = Player.query.filter_by(id=id).first()
+    pass
 
 @app.route("/resetdb", methods=['GET'])
 def reset_db():
