@@ -1,7 +1,5 @@
 from datetime import datetime
-
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from app import db, login
 from flask_login import UserMixin
 
@@ -18,7 +16,6 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.pw_hash, password)
-
 
 @login.user_loader
 def load_user(id):
@@ -42,6 +39,8 @@ class Player(db.Model):
     hp = db.Column(db.Integer)
     hp_max = db.Column(db.Integer)
     insp = db.Column(db.Integer)
+    player_class = db.Column(db.Integer, db.ForeignKey('player_class.id'), nullable=False)
+    player_race = db.Column(db.Integer, db.ForeignKey('player_race.id'), nullable=False)
 
     def __repr__(self):
         return '<Player {}'.format(self.name)
@@ -110,13 +109,19 @@ class Player(db.Model):
             self.level = 20
             self.xp = self.xp - 355000
 
+
 class PlayerClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     hit_die = db.Column(db.Integer)
+    players = db.relationship('Player', backref='class', lazy='dynamic')
+
+
 class PlayerRace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
+    players = db.relationship('Player', backref='race', lazy='dynamic')
+
 
 class UserToPlayer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
