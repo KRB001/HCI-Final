@@ -12,6 +12,10 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 #    return render_template('main.html', ai = ai)
 
 
+@app.route('/test')
+def test_route():
+    return render_template('base.html', title='test')
+
 @app.route('/updateplayer/<player_id>', methods=['GET'])
 @login_required
 def update_player(player_id):
