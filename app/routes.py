@@ -13,7 +13,8 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 
 
 @app.route('/')
-def test_route():
+@app.route('/index')
+def home():
     return render_template('index.html', title='Home')
 
 @app.route('/updateplayer/<player_id>', methods=['GET'])
