@@ -297,9 +297,10 @@ def clear_db():
     db.session.commit()
 
 
+@app.route('/')
 @app.route('/index')
 def index():
-    return ""
+    return render_template('index.html', title='Main Page')
 
 
 @app.route('/login', methods=['GET', 'POST'])
