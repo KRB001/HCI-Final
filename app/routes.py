@@ -15,12 +15,72 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 @app.route('/')
 @app.route('/index')
 def home():
-    return render_template('index.html', title='Home')
+    return render_template('index.html', title='Home', user=current_user)
 
-@app.route('/updateplayer/<player_id>', methods=['GET'])
+@app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
-def update_player(player_id):
-    pass
+def update_player(char_id):
+    character = Player.query.filter_by(id=int(char_id)).first()
+    form = CreateCharacterForm()
+    form.player_race.choices = [(r.id, r.name) for r in PlayerRace.query.order_by('name')]
+    form.player_class.choices = [(c.id, c.name) for c in PlayerClass.query.order_by('name')]
+
+    if character is None:
+        print("CHAR DOES NOT EXIST")
+        form.level.data = 1
+        form.xp.data = 0
+
+        if form.validate_on_submit():
+            character = Player(
+                name=form.name.data, str=int(form.strength.data),
+                dex=int(form.dexterity.data), con=int(form.constitution.data),
+                int=int(form.intelligence.data), wis=int(form.wisdom.data),
+                cha=int(form.charisma.data), level=int(form.level.data),
+                xp=int(form.xp.data)
+            )
+            character.player_race = int(form.player_race.data)
+            character.player_class = int(form.player_class.data)
+            character.update()
+            character.user_id = int(current_user.id)
+            db.session.add(character)
+            db.session.commit()
+            flash("Character updated!")
+
+    else:
+        print("CHAR DOES EXIST")
+        print(character)
+
+        if form.name.data == None:
+            form.name.data = character.name
+            form.strength.data = character.str
+            form.dexterity.data = character.dex
+            form.constitution.data = character.con
+            form.intelligence.data = character.int
+            form.wisdom.data = character.wis
+            form.charisma.data = character.cha
+            form.level.data = character.level
+            form.xp.data = character.xp
+            form.player_race.data = character.player_race
+            form.player_class.data = character.player_class
+
+        if form.validate_on_submit():
+            character.set_name(form.name.data)
+            character.set_str(form.strength.data)
+            character.set_dex(form.dexterity.data)
+            character.set_con(form.dexterity.data)
+            character.set_int(form.intelligence.data)
+            character.set_wis(form.wisdom.data)
+            character.set_cha(form.charisma.data)
+            character.set_level(form.level.data)
+            character.set_xp(form.xp.data)
+            character.set_race(form.player_race.data)
+            character.set_class(form.player_class.data)
+
+            character.update()
+            db.session.commit()
+            flash("Character updated!")
+
+    return render_template('create_character.html', title='Edit Character', form=form, user=current_user)
 
 @app.route("/resetdb", methods=['GET'])
 def reset_db():
@@ -315,7 +375,7 @@ def login():
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         return redirect((url_for('index')))
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', form=form, user=current_user)
 
 @app.route("/logout")
 def logout():
@@ -336,4 +396,4 @@ def register():
         flash("Registration complete!")
         login_user(user)
         return redirect(url_for('index'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, user=current_user)

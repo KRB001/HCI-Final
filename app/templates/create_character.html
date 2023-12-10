@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1> Edit Character </h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.strength.label }}<br>
+            {{ form.strength(size=32) }}<br>
+            {% for error in form.strength.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.dexterity.label }}<br>
+            {{ form.dexterity(size=32) }}<br>
+            {% for error in form.dexterity.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.constitution.label }}<br>
+            {{ form.constitution(size=32) }}<br>
+            {% for error in form.constitution.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.intelligence.label }}<br>
+            {{ form.intelligence(size=32) }}<br>
+            {% for error in form.intelligence.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.wisdom.label }}<br>
+            {{ form.wisdom(size=32) }}<br>
+            {% for error in form.wisdom.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.charisma.label }}<br>
+            {{ form.charisma(size=32) }}<br>
+            {% for error in form.charisma.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.level.label }}<br>
+            {{ form.level(size=32) }}<br>
+            {% for error in form.level.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.xp.label }}<br>
+            {{ form.xp(size=32) }}<br>
+            {% for error in form.xp.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.player_class.label }}<br>
+            {{ form.player_class(size=32) }}<br>
+            {% for error in form.player_class.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+         <p>
+            {{ form.player_race.label }}<br>
+            {{ form.player_race(size=32) }}<br>
+            {% for error in form.player_race.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        {{ form.submit }}
+    </form>
+{% endblock %}

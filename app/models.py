@@ -48,6 +48,42 @@ class Player(db.Model):
     def update(self):
         self.last_updated = datetime.utcnow()
 
+    def set_user(self, user_id):
+        self.user_id = user_id
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_str(self, strength):
+        self.str = strength
+
+    def set_dex(self, dex):
+        self.dex = dex
+
+    def set_con(self, con):
+        self.con = con
+
+    def set_int(self, intelligence):
+        self.int = intelligence
+
+    def set_wis(self, wis):
+        self.wis = wis
+
+    def set_cha(self, cha):
+        self.cha = cha
+
+    def set_level(self, level):
+        self.level = level
+
+    def set_xp(self, xp):
+        self.xp = xp
+
+    def set_race(self, race_id):
+        self.player_race = race_id
+
+    def set_class(self, class_id):
+        self.player_class = class_id
+
     def level_check(self):
         # runs thru all levelup xp conditions, should bring player to the right level
         # depending on their xp (can be called at any time, but recommended to be called whenever updating xp)

@@ -18,17 +18,36 @@
             <nav class="navbar navbar-expand-sm bg-warning-subtle">
                 <div class="container-fluid">
                     <ul class="navbar-nav">
+
+                        {% if current_user.is_anonymous %}
+                            <a href="{{ url_for('login') }}">
+                                <button type="button" class="btn btn-primary btn-sm">Login</button>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('logout') }}">
+                                <button type="button" class="btn btn-secondary btn-sm">Logout</button>
+                            </a>
+                        {% endif %}
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('index')}}">Home</a>
                         </li>
+
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#enter_info">Make a new Character</a>
+                            <a class="nav-link" href="#enter_info">New Character</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#enter_info">New Campaign</a>
                         </li>
                         <div class="dropdown">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                                 Profile
                             </button>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#about">About</a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="#characters">Your Characters</a>
                                 </li>
