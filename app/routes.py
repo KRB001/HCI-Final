@@ -12,9 +12,9 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 #    return render_template('main.html', ai = ai)
 
 
-@app.route('/test')
+@app.route('/')
 def test_route():
-    return render_template('base.html', title='test')
+    return render_template('index.html', title='Home')
 
 @app.route('/updateplayer/<player_id>', methods=['GET'])
 @login_required
