@@ -26,7 +26,7 @@ def new_char():
         if Player.query.filter_by(id=next).first() is None:
             found = True
             return redirect("/updatechar/" + str(next))
-        next = next + 1g
+        next = next + 1
 
 @app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
