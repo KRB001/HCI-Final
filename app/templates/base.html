@@ -14,7 +14,9 @@
           style="
             background-image: url('{{ url_for('static', filename='images/hci_bg.png') }}');
             height: 100vh; background-size:100% auto;">
-            <img src="{{ url_for('static', filename='images/hci_banner.png') }}" class="img-fluid" />
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/hci_banner.png') }}" class="img-fluid" />
+            </a>
             <nav class="navbar navbar-expand-sm bg-warning-subtle">
                 <div class="container-fluid">
                     <ul class="navbar-nav">
