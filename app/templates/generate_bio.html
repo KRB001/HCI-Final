@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <form method="post" action="{{ url_for('create_bio', char_id=char_id) }}">
+        {{ form.hidden_tag() }}
+            <div class="container pt-12">
+                <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
+                    <div class="card-body text-center">
+                          <div class="row">
+                                <div class="col-sm">
+                                  <div class="card mx-auto", style="width: 65rem;">
+                                      <div class="card-header">
+                                          Bio Generator
+                                      </div>
+                                  <div class="card-body">
+                                        <p>
+                                            {{ form.bio_prompt.label }}<br>
+                                            {{ form.bio_prompt(rows=4, cols=100) }}<br>
+                                            <input type="submit" class="btn btn-primary" value="Generate" name="generate_bio">
+                                            <br><hr>
+                                            {{ form.bio.label }}<br>
+                                            {{ form.bio(rows=10, cols=100) }}<br>
+                                            <input type="submit" class="btn btn-primary" value="Submit" name="submit_bio">
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+{% endblock %}

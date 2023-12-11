@@ -19,8 +19,9 @@ class CreateCharacterForm(FlaskForm):
     player_class = SelectField('Class', validators=[DataRequired()], coerce=int)
     player_race = SelectField('Race', validators=[DataRequired()], coerce=int)
     player_alignment = SelectField('Alignment', validators=[DataRequired()], coerce=int)
-    player_bio = TextAreaField('Character Biography', validators=[DataRequired()])
+    player_bio = TextAreaField('Character Biography')
     submit = SubmitField('Update Character')
+    submit_bio = SubmitField('Generate Bio')
 
     def validate_stats(self, level, strength, dexterity, constitution, intelligence, wisdom, charisma):
        max_skill_points = 16 + int(level)
@@ -55,3 +56,10 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user != None:
             raise ValidationError("Email associated with another account. Please use a different email.")
+
+
+class BioGenerator(FlaskForm):
+    bio_prompt = TextAreaField('Bio Prompt', validators=[DataRequired()])
+    bio = TextAreaField('Character Bio')
+    generate_bio = SubmitField('Generate')
+    submit_bio = SubmitField('Submit')

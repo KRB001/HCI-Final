@@ -3,13 +3,8 @@ from flask import request, redirect, url_for, flash, render_template
 from app.models import *
 import datetime
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, CreateCharacterForm, CreateCampaignForm
-#from app.ai_api import write_description
-
-#@app.route('/')
-#def main():
-#    ai = write_description()
-#    return render_template('main.html', ai = ai)
+from app.forms import LoginForm, RegistrationForm, CreateCharacterForm, BioGenerator, CreateCampaignForm
+from app.ai_api import write_description
 
 
 @app.route('/')
@@ -36,6 +31,41 @@ def campaigns():
 def campaign(campaign_id):
     camp = Campaign.query.filter_by(id=campaign_id).first()
     pass
+
+@app.route('/create_bio/<char_id>', methods=['GET', 'POST'])
+@login_required
+def create_bio(char_id):
+    character = Player.query.filter_by(id=int(char_id)).first()
+    class_id = character.player_class
+    race_id = character.player_race
+    alignment_id = character.player_alignment
+    char_class = PlayerClass.query.filter_by(id=int(class_id)).first()
+    char_race = PlayerRace.query.filter_by(id=int(race_id)).first()
+    char_alignment = PlayerAlignment.query.filter_by(id=int(alignment_id)).first()
+    ai_inital_prompt = 'Create me a D&D character that is named {}, and is the gender of {}. They are a class of {}, race ' \
+                       'of {}, and an alignment of {}'.format(character.name, character.gender, char_class.name,
+                                                              char_race.name, char_alignment.name)
+    form = BioGenerator()
+    print("In the form")
+    if form.validate_on_submit():
+        print("submitted")
+        if form.generate_bio.data:
+            print(form.bio_prompt.data)
+            ai_prompt = form.bio_prompt.data
+            ai_feedback = write_description(ai_prompt)
+            form.bio.data = ai_feedback
+        elif form.submit_bio.data:
+            print(form.bio.data)
+            character.set_bio(form.bio.data)
+            character.update()
+            db.session.commit()
+            return redirect("/updatechar/" + str(char_id))
+
+    elif request.method == 'GET':
+        form.bio_prompt.data = ai_inital_prompt
+        print(form.bio_prompt.data)
+
+    return render_template('generate_bio.html', char_id=char_id, form=form)
 
 @app.route('/newchar')
 @login_required
@@ -78,6 +108,7 @@ def update_player(char_id):
         form.level.data = 1
         form.xp.data = 0
 
+
         if form.validate_on_submit():
             character = Player(
                 name=form.name.data, str=int(form.strength.data),
@@ -99,6 +130,11 @@ def update_player(char_id):
     else:
         print("CHAR DOES EXIST")
         print(character)
+
+        if form.submit_bio.data:
+            print("asked to generate bio")
+            print("Char id:", char_id)
+            return redirect("/create_bio/" + str(char_id))
 
         if form.name.data == None:
             form.name.data = character.name
@@ -140,9 +176,9 @@ def update_player(char_id):
 
     return render_template('create_character.html', title='Edit Character', form=form, user=current_user)
 
+
 @app.route("/resetdb", methods=['GET'])
 def reset_db():
-
     clear_db()
     print("Cleared DB")
 
@@ -470,10 +506,12 @@ def login():
         return redirect((url_for('index')))
     return render_template('login.html', title='Sign In', form=form, user=current_user)
 
+
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
