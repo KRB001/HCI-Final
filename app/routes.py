@@ -3,7 +3,7 @@ from flask import request, redirect, url_for, flash, render_template
 from app.models import *
 import datetime
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
+from app.forms import LoginForm, RegistrationForm, CreateCharacterForm, CreateCampaignForm
 #from app.ai_api import write_description
 
 #@app.route('/')
@@ -17,6 +17,26 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 def home():
     return render_template('index.html', title='Home', user=current_user)
 
+@app.route('/characters')
+@login_required
+def characters():
+    chars = current_user.players
+    return render_template('characters.html', title='Your Characters',
+                           user=current_user, characters=chars)
+
+@app.route('/campaigns')
+@login_required
+def campaigns():
+    camps = current_user.campaigns
+    return render_template('campaigns.html', title='Your Campaigns',
+                           user=current_user, campaigns=camps)
+
+@app.route('/campaign/<campaign_id>')
+@login_required
+def campaign(campaign_id):
+    camp = Campaign.query.filter_by(id=campaign_id).first()
+    pass
+
 @app.route('/newchar')
 @login_required
 def new_char():
@@ -28,6 +48,21 @@ def new_char():
             return redirect("/updatechar/" + str(next))
         next = next + 1
 
+@app.route('/newcampaign', methods=['GET', 'POST'])
+@login_required
+def new_campaign():
+    form = CreateCampaignForm()
+    if form.validate_on_submit():
+        campaign = Campaign(
+            name=form.name.data, description=form.description.data, user_id=current_user.id
+        )
+        db.session.add(campaign)
+        db.session.commit()
+        flash("Created new campaign!")
+        return redirect("/index")
+
+    return render_template('create_campaign.html', title='Create Campaign', form=form, user=current_user)
+
 @app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
 def update_player(char_id):
@@ -36,6 +71,7 @@ def update_player(char_id):
     form.player_race.choices = [(r.id, r.name) for r in PlayerRace.query.order_by('name')]
     form.player_class.choices = [(c.id, c.name) for c in PlayerClass.query.order_by('name')]
     form.player_alignment.choices = [(a.id, a.name) for a in PlayerAlignment.query.order_by('id')]
+    form.campaign.choices = [(c.id, c.name) for c in Campaign.query.order_by('name')]
 
     if character is None:
         print("CHAR DOES NOT EXIST")
@@ -53,6 +89,7 @@ def update_player(char_id):
             character.player_race = int(form.player_race.data)
             character.player_class = int(form.player_class.data)
             character.player_alignment = int(form.player_alignment.data)
+            character.player_campaign = int(form.campaign.data)
             character.update()
             character.user_id = int(current_user.id)
             db.session.add(character)
@@ -78,6 +115,7 @@ def update_player(char_id):
             form.player_race.data = character.player_race
             form.player_class.data = character.player_class
             form.player_alignment.data = character.player_alignment
+            form.campaign.data = character.player_campaign
 
         if form.validate_on_submit():
             character.set_name(form.name.data)
@@ -94,6 +132,7 @@ def update_player(char_id):
             character.set_race(form.player_race.data)
             character.set_class(form.player_class.data)
             character.set_alignment(form.player_alignment.data)
+            character.set_campaign(form.campaign.data)
 
             character.update()
             db.session.commit()

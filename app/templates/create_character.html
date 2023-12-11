@@ -49,6 +49,13 @@
                                                 <span style="color: red;">[{{ error }}]</span>
                                             {% endfor %}
                                           </p>
+                                          <p>
+                                            {{ form.campaign.label }}<br>
+                                            {{ form.campaign }}<br>
+                                            {% for error in form.campaign.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
                                       </div>
                                   </div>
                                 </div>

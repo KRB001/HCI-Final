@@ -7,6 +7,7 @@ from app.models import User, Player, PlayerClass, PlayerRace
 class CreateCharacterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     gender = StringField('Gender', validators=[DataRequired()])
+    campaign = SelectField('Campaign', validators=[DataRequired()], coerce=int)
     strength = IntegerField('Strength', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
     dexterity = IntegerField('Dexterity', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
     constitution = IntegerField('Constitution', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
@@ -26,6 +27,11 @@ class CreateCharacterForm(FlaskForm):
        if int(strength) + int(dexterity) + int(constitution) + int(intelligence) + int(wisdom) + int(charisma) > max_skill_points:
            raise ValidationError("Number of skill points expended exceeds " + str(max_skill_points))
 
+
+class CreateCampaignForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    submit = SubmitField('Begin')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

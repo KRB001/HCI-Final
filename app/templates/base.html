@@ -38,7 +38,7 @@
                             <a class="nav-link" href="{{ url_for('new_char') }}">New Character</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#enter_info">New Campaign</a>
+                            <a class="nav-link" href="{{ url_for('new_campaign') }}">New Campaign</a>
                         </li>
                         <div class="dropdown">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
@@ -49,10 +49,10 @@
                                     <a class="dropdown-item" href="#about">About</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#characters">Your Characters</a>
+                                    <a class="dropdown-item" href="{{ url_for("characters") }}">Your Characters</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#campaigns">Your Campaigns</a>
+                                    <a class="dropdown-item" href="{{ url_for("campaigns") }}">Your Campaigns</a>
                                 </li>
                             </ul>
                         </div>

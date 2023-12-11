@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="container pt-5">
+     <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+                <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
+                    <div class="card-header">
+                        <h1>A New Campaign...</h1>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            {{ form.name.label }}<br>
+                            {{ form.name(size=32) }}<br>
+                            {% for error in form.name.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </p>
+                        <p>
+                            {{ form.description.label }}<br>
+                            {{ form.description(size=100) }}<br>
+                            {% for error in form.description.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-secondary">
+                                {{ form.submit }}
+                            </button>
+                        </p>
+                    </div>
+                </div>
+     </form>
+    </div>
+{% endblock %}

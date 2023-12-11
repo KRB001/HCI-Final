@@ -10,12 +10,21 @@ class User(UserMixin, db.Model):
     pw_hash = db.Column(db.String(128))
 
     players = db.relationship('Player', backref='user', lazy='dynamic')
+    campaigns = db.relationship('Campaign', backref='user', lazy='dynamic')
 
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.pw_hash, password)
+
+class Campaign(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(128), index=True, unique=True)
+    description = db.Column(db.String(4096), unique=True)
+    players = db.relationship('Player', backref='campaign', lazy='dynamic')
+
 
 @login.user_loader
 def load_user(id):
@@ -44,6 +53,7 @@ class Player(db.Model):
     player_class = db.Column(db.Integer, db.ForeignKey('player_class.id'), nullable=False)
     player_race = db.Column(db.Integer, db.ForeignKey('player_race.id'), nullable=False)
     player_alignment = db.Column(db.Integer, db.ForeignKey('player_alignment.id'), nullable=False)
+    player_campaign = db.Column(db.Integer, db.ForeignKey('campaign.id'))
 
     def __repr__(self):
         return '<Player {}'.format(self.name)
@@ -62,6 +72,9 @@ class Player(db.Model):
 
     def set_bio(self, bio):
         self.bio = bio
+
+    def set_campaign(self, campaign):
+        self.player_campaign = campaign
 
     def set_alignment(self, alignment):
         self.player_alignment = alignment

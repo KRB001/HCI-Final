@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="card", style="width: 20rem;">
+                <div class="card-header">
+                    <h1> Your Characters </h1>
+                </div>
+    </div>
+
+    <div class="container pt-5">
+                <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for character in characters %}
+                                <a href="/updatechar/{{ character.id }}">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ character.name }}
+                                        <span class="badge badge-warning badge-pill">{{ character.level }}</span>
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+    </div>
+{% endblock %}

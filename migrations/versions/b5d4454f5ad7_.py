@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: d4ef6192eaeb
+Revision ID: b5d4454f5ad7
 Revises: 
-Create Date: 2023-12-10 20:03:17.029663
+Create Date: 2023-12-10 22:10:30.846748
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd4ef6192eaeb'
+revision = 'b5d4454f5ad7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -54,6 +54,18 @@ def upgrade():
     with op.batch_alter_table('user', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_user_username'), ['username'], unique=True)
 
+    op.create_table('campaign',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('name', sa.String(length=128), nullable=True),
+    sa.Column('description', sa.String(length=4096), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('description')
+    )
+    with op.batch_alter_table('campaign', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_campaign_name'), ['name'], unique=True)
+
     op.create_table('player',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -77,7 +89,9 @@ def upgrade():
     sa.Column('player_class', sa.Integer(), nullable=False),
     sa.Column('player_race', sa.Integer(), nullable=False),
     sa.Column('player_alignment', sa.Integer(), nullable=False),
+    sa.Column('player_campaign', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['player_alignment'], ['player_alignment.id'], ),
+    sa.ForeignKeyConstraint(['player_campaign'], ['campaign.id'], ),
     sa.ForeignKeyConstraint(['player_class'], ['player_class.id'], ),
     sa.ForeignKeyConstraint(['player_race'], ['player_race.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
@@ -106,6 +120,10 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_player_gender'))
 
     op.drop_table('player')
+    with op.batch_alter_table('campaign', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_campaign_name'))
+
+    op.drop_table('campaign')
     with op.batch_alter_table('user', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_user_username'))
 
