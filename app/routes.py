@@ -41,7 +41,11 @@ def campaigns():
 @login_required
 def campaign(campaign_id):
     camp = Campaign.query.filter_by(id=campaign_id).first()
-    pass
+    if camp is not None:
+        return render_template('campaign.html', title=camp.name,
+                               user=current_user, campaign=camp)
+    else:
+        return redirect('/index')
 
 @app.route('/create_bio/<char_id>', methods=['GET', 'POST'])
 @login_required
@@ -125,7 +129,8 @@ def update_player(char_id):
 
         if form.validate_on_submit():
             character = Player(
-                name=form.name.data, str=int(form.strength.data),
+                name=form.name.data, gender=form.gender.data,
+                bio=form.player_bio.data, str=int(form.strength.data),
                 dex=int(form.dexterity.data), con=int(form.constitution.data),
                 int=int(form.intelligence.data), wis=int(form.wisdom.data),
                 cha=int(form.charisma.data), level=int(form.level.data),
