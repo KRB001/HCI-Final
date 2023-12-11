@@ -4,18 +4,20 @@ from app.models import *
 import datetime
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
-#from app.ai_api import write_description
-
-#@app.route('/')
-#def main():
-#    ai = write_description()
-#    return render_template('main.html', ai = ai)
+from app.ai_api import write_description
 
 
 @app.route('/')
 @app.route('/index')
 def home():
     return render_template('index.html', title='Home', user=current_user)
+
+
+@app.route('/create_bio')
+@login_required
+def create_bio():
+    return render_template('generate_bio.html')
+
 
 @app.route('/newchar')
 @login_required
