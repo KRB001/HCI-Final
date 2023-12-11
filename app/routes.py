@@ -13,7 +13,7 @@ def home():
     return render_template('index.html', title='Home', user=current_user)
 
 
-@app.route('/create_bio')
+@app.route('/create_bio/<char_id>')
 @login_required
 def create_bio(char_id):
     character = Player.query.filter_by(id=int(char_id)).first()
@@ -80,7 +80,7 @@ def update_player(char_id):
         if form.submit_bio.data:
             print("asked to generate bio")
             print("Char id:", char_id)
-            return redirect(url_for('create_bio', char_id=char_id))
+            return redirect("/create_bio/" + str(char_id))
 
         if form.name.data == None:
             form.name.data = character.name
