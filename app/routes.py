@@ -16,15 +16,26 @@ def home():
 @login_required
 def characters():
     chars = current_user.players
-    return render_template('characters.html', title='Your Characters',
-                           user=current_user, characters=chars)
+    if Player.query.filter_by(user_id=current_user.id).first() is None:
+        print("no")
+        return render_template('characters.html', title='Your Characters',
+                               user=current_user)
+    else:
+        print("yes")
+        return render_template('characters.html', title='Your Characters',
+                               user=current_user, characters=chars)
+
 
 @app.route('/campaigns')
 @login_required
 def campaigns():
     camps = current_user.campaigns
-    return render_template('campaigns.html', title='Your Campaigns',
-                           user=current_user, campaigns=camps)
+    if Campaign.query.filter_by(user_id=current_user.id).first() is None:
+        return render_template('campaigns.html', title='Your Campaigns',
+                               user=current_user)
+    else:
+        return render_template('campaigns.html', title='Your Campaigns',
+                               user=current_user, campaigns=camps)
 
 @app.route('/campaign/<campaign_id>')
 @login_required

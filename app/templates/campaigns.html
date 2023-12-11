@@ -10,6 +10,14 @@
     <div class="container pt-5">
                 <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
                     <div class="card-body">
+                    {% if not campaigns %}
+                        <h3>
+                        Looks like you don't have any campaigns.
+                        <a href="{{ url_for('new_campaign') }}">
+                            <button type="button" class="btn btn-secondary btn-lg">Create a Campaign</button>
+                        </a>
+                        </h3>
+                    {% endif %}
                         <ul class="list-group">
                             {% for campaign in campaigns %}
                                 <a href="/campaign/{{ campaign.id }}">
