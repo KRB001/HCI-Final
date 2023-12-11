@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-            <div class="container pt-5">
+    <form method="post" action="{{ url_for('create_bio', char_id=char_id) }}">
+        {{ form.hidden_tag() }}
+            <div class="container pt-12">
                 <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
                     <div class="card-body">
                           <div class="row">
@@ -10,29 +12,22 @@
                                       <div class="card-header">
                                           Bio Generator
                                       </div>
-                                      <div class="card-body">
-                                          <h1> Test! Did you make it here?</h1>
-                                          <form method="post">
-                                            <div class="textarea-container">
-                                                <label for="user_input" contenteditable="true">Generate</label>
-                                                <textarea name="user_input" id="user_input" rows="4" class="form-control"></textarea>
-                                            </div>
+                                  <div class="card-body">
+                                        <p>
+                                            {{ form.bio_prompt.label }}<br>
+                                            {{ form.bio_prompt(size=200) }}<br>
+                                            <input type="submit" class="btn btn-primary" value="Generate" name="generate_bio">
                                             <br>
-                                            <input type="submit" class="btn btn-primary" value="Generate">
-                                        </form>
-                                          <form method="post">
-                                            <div class="textarea-container">
-                                                <label for="user_input" contenteditable="true">Submit</label>
-                                                <textarea name="user_input" id="user_input" rows="4" class="form-control"></textarea>
-                                            </div>
-                                            <br>
-                                            <input type="submit" class="btn btn-primary" value="Submit">
-                                        </form>
+                                            {{ form.bio.label }}<br>
+                                            {{ form.bio(size=200) }}<br>
+                                            <input type="submit" class="btn btn-primary" value="Submit" name="submit_bio">
                                         </div>
+                                        </p>
                                     </div>
                                 </div>
                           </div>
                     </div>
                 </div>
             </div>
+    </form>
 {% endblock %}

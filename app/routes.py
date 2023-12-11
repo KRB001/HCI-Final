@@ -13,20 +13,40 @@ def home():
     return render_template('index.html', title='Home', user=current_user)
 
 
-@app.route('/create_bio/<char_id>')
+@app.route('/create_bio/<char_id>', methods=['GET', 'POST'])
 @login_required
 def create_bio(char_id):
     character = Player.query.filter_by(id=int(char_id)).first()
-    test_line = 'This is a test line of text for now.'
+    class_id = character.player_class
+    race_id = character.player_race
+    alignment_id = character.player_alignment
+    char_class = PlayerClass.query.filter_by(id=int(class_id)).first()
+    char_race = PlayerRace.query.filter_by(id=int(race_id)).first()
+    char_alignment = PlayerAlignment.query.filter_by(id=int(alignment_id)).first()
+    ai_inital_prompt = 'Create me a D&D character that is named {}, and is the gender of {}. They are a class of {}, race ' \
+                       'of {}, and an alignment of {}'.format(character.name, character.gender, char_class.name,
+                                                              char_race.name, char_alignment.name)
     form = BioGenerator()
-    if form.generate_bio.data:
-        api_prompt = form.generate_bio.data
-    if form.submit_bio.data:
-        new_bio = form.bio.data
+    print("In the form")
+    if form.validate_on_submit():
+        print("submitted")
+        if form.generate_bio.data:
+            print(form.bio_prompt.data)
+            ai_prompt = form.bio_prompt.data
+            ai_feedback = write_description(ai_prompt)
+            form.bio.data = ai_feedback
+        elif form.submit_bio.data:
+            print(form.bio.data)
+            character.set_bio(form.bio.data)
+            character.update()
+            db.session.commit()
+            return redirect("/updatechar/" + str(char_id))
 
-    form.bio_prompt.data = test_line
+    elif request.method == 'GET':
+        form.bio_prompt.data = ai_inital_prompt
+        print(form.bio_prompt.data)
 
-    return render_template('generate_bio.html')
+    return render_template('generate_bio.html', char_id=char_id, form=form)
 
 
 @app.route('/newchar')
