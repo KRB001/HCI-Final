@@ -3,7 +3,7 @@ from flask import request, redirect, url_for, flash, render_template
 from app.models import *
 import datetime
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
+from app.forms import LoginForm, RegistrationForm, CreateCharacterForm, BioGenerator
 from app.ai_api import write_description
 
 
@@ -15,7 +15,17 @@ def home():
 
 @app.route('/create_bio')
 @login_required
-def create_bio():
+def create_bio(char_id):
+    character = Player.query.filter_by(id=int(char_id)).first()
+    test_line = 'This is a test line of text for now.'
+    form = BioGenerator()
+    if form.generate_bio.data:
+        api_prompt = form.generate_bio.data
+    if form.submit_bio.data:
+        new_bio = form.bio.data
+
+    form.bio_prompt.data = test_line
+
     return render_template('generate_bio.html')
 
 
@@ -30,6 +40,7 @@ def new_char():
             return redirect("/updatechar/" + str(next))
         next = next + 1
 
+
 @app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
 def update_player(char_id):
@@ -43,6 +54,7 @@ def update_player(char_id):
         print("CHAR DOES NOT EXIST")
         form.level.data = 1
         form.xp.data = 0
+
 
         if form.validate_on_submit():
             character = Player(
@@ -64,6 +76,11 @@ def update_player(char_id):
     else:
         print("CHAR DOES EXIST")
         print(character)
+
+        if form.submit_bio.data:
+            print("asked to generate bio")
+            print("Char id:", char_id)
+            return redirect(url_for('create_bio', char_id=char_id))
 
         if form.name.data == None:
             form.name.data = character.name
@@ -103,9 +120,9 @@ def update_player(char_id):
 
     return render_template('create_character.html', title='Edit Character', form=form, user=current_user)
 
+
 @app.route("/resetdb", methods=['GET'])
 def reset_db():
-
     clear_db()
     print("Cleared DB")
 
@@ -433,10 +450,12 @@ def login():
         return redirect((url_for('index')))
     return render_template('login.html', title='Sign In', form=form, user=current_user)
 
+
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

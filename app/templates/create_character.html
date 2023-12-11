@@ -142,7 +142,7 @@
                                                 {% for error in form.player_bio.errors %}
                                                     <span style="color: red;">[{{ error }}]</span>
                                                 {% endfor %}
-                                                <button type="submit" name="generate_bio"> Generate Bio!</button>
+                                                    {{ form.submit_bio }}
                                               </p>
                                             </div>
                                         </div>
