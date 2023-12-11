@@ -111,7 +111,12 @@ def new_campaign():
 @app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
 def update_player(char_id):
+
     character = Player.query.filter_by(id=int(char_id)).first()
+
+    if character is not None and character.user_id != current_user.id:
+        return redirect("/characters")
+
     form = CreateCharacterForm()
     form.player_race.choices = [(r.id, r.name) for r in PlayerRace.query.order_by('name')]
     form.player_class.choices = [(c.id, c.name) for c in PlayerClass.query.order_by('name')]
