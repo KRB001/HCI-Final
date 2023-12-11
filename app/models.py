@@ -25,6 +25,7 @@ class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(128), index=True)
+    gender = db.Column(db.String(128), index=True)
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
     str = db.Column(db.Integer)
     dex = db.Column(db.Integer)
@@ -39,8 +40,10 @@ class Player(db.Model):
     hp = db.Column(db.Integer)
     hp_max = db.Column(db.Integer)
     insp = db.Column(db.Integer)
+    bio = db.Column(db.String(4096))
     player_class = db.Column(db.Integer, db.ForeignKey('player_class.id'), nullable=False)
     player_race = db.Column(db.Integer, db.ForeignKey('player_race.id'), nullable=False)
+    player_alignment = db.Column(db.Integer, db.ForeignKey('player_alignment.id'), nullable=False)
 
     def __repr__(self):
         return '<Player {}'.format(self.name)
@@ -53,6 +56,15 @@ class Player(db.Model):
 
     def set_name(self, name):
         self.name = name
+
+    def set_gender(self, gender):
+        self.gender = gender
+
+    def set_bio(self, bio):
+        self.bio = bio
+
+    def set_alignment(self, alignment):
+        self.player_alignment = alignment
 
     def set_str(self, strength):
         self.str = strength
@@ -157,6 +169,12 @@ class PlayerRace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     players = db.relationship('Player', backref='race', lazy='dynamic')
+
+
+class PlayerAlignment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    players = db.relationship('Player', backref='alignment', lazy='dynamic')
 
 
 class UserToPlayer(db.Model):

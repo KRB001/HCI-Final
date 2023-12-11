@@ -6,6 +6,7 @@ from app.models import User, Player, PlayerClass, PlayerRace
 
 class CreateCharacterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+    gender = StringField('Gender', validators=[DataRequired()])
     strength = IntegerField('Strength', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
     dexterity = IntegerField('Dexterity', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
     constitution = IntegerField('Constitution', validators=[DataRequired(), NumberRange(3, 20, "Stat must be in the range 3 - 20")])
@@ -16,6 +17,8 @@ class CreateCharacterForm(FlaskForm):
     xp = IntegerField('XP')
     player_class = SelectField('Class', validators=[DataRequired()], coerce=int)
     player_race = SelectField('Race', validators=[DataRequired()], coerce=int)
+    player_alignment = SelectField('Alignment', validators=[DataRequired()], coerce=int)
+    player_bio = TextAreaField('Character Biography', validators=[DataRequired()])
     submit = SubmitField('Update Character')
 
     def validate_stats(self, level, strength, dexterity, constitution, intelligence, wisdom, charisma):

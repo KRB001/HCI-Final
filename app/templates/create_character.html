@@ -1,86 +1,151 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1> Edit Character </h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=32) }}<br>
-            {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.strength.label }}<br>
-            {{ form.strength(size=32) }}<br>
-            {% for error in form.strength.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.dexterity.label }}<br>
-            {{ form.dexterity(size=32) }}<br>
-            {% for error in form.dexterity.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.constitution.label }}<br>
-            {{ form.constitution(size=32) }}<br>
-            {% for error in form.constitution.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.intelligence.label }}<br>
-            {{ form.intelligence(size=32) }}<br>
-            {% for error in form.intelligence.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.wisdom.label }}<br>
-            {{ form.wisdom(size=32) }}<br>
-            {% for error in form.wisdom.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.charisma.label }}<br>
-            {{ form.charisma(size=32) }}<br>
-            {% for error in form.charisma.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.level.label }}<br>
-            {{ form.level(size=32) }}<br>
-            {% for error in form.level.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.xp.label }}<br>
-            {{ form.xp(size=32) }}<br>
-            {% for error in form.xp.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.player_class.label }}<br>
-            {{ form.player_class(size=32) }}<br>
-            {% for error in form.player_class.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-         <p>
-            {{ form.player_race.label }}<br>
-            {{ form.player_race(size=32) }}<br>
-            {% for error in form.player_race.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        {{ form.submit }}
+        <div class="sticky-top">
+            <div class="card", style="width: 20rem;">
+                <div class="card-header">
+                    <h1> Edit Character </h1>
+                </div>
+                <div class="card-body">
+                    {{ form.submit }}
+                </div>
+            </div>
+        </div>
+            <div class="container pt-5">
+                <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
+                    <div class="card-body">
+                          <div class="row">
+                                <div class="col-sm">
+                                  <div class="card mx-auto", style="width: 20rem;">
+                                      <div class="card-header">
+                                          Basics
+                                      </div>
+                                      <div class="card-body">
+                                          <p>
+                                            {{ form.name.label }}<br>
+                                            {{ form.name(size=32) }}<br>
+                                            {% for error in form.name.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
+                                          <p>
+                                            {{ form.player_bio.label }}<br>
+                                            {{ form.player_bio(size=32) }}<br>
+                                            {% for error in form.player_bio.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
+                                          <p>
+                                            {{ form.gender.label }}<br>
+                                            {{ form.gender(size=32) }}<br>
+                                            {% for error in form.gender.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
+                                          <p>
+                                            {{ form.level.label }}<br>
+                                            {{ form.level(size=32) }}<br>
+                                            {% for error in form.level.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
+                                          <p>
+                                            {{ form.xp.label }}<br>
+                                            {{ form.xp(size=32) }}<br>
+                                            {% for error in form.xp.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                          </p>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm">
+                                  <div class="card mx-auto", style="width: 20rem;">
+                                      <div class="card-header">
+                                          Stats
+                                      </div>
+                                      <div class="card-body">
+                                          <p>
+                                            {{ form.strength.label }}<br>
+                                            {{ form.strength(size=32) }}<br>
+                                            {% for error in form.strength.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.dexterity.label }}<br>
+                                            {{ form.dexterity(size=32) }}<br>
+                                            {% for error in form.dexterity.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.constitution.label }}<br>
+                                            {{ form.constitution(size=32) }}<br>
+                                            {% for error in form.constitution.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.intelligence.label }}<br>
+                                            {{ form.intelligence(size=32) }}<br>
+                                            {% for error in form.intelligence.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.wisdom.label }}<br>
+                                            {{ form.wisdom(size=32) }}<br>
+                                            {% for error in form.wisdom.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.charisma.label }}<br>
+                                            {{ form.charisma(size=32) }}<br>
+                                            {% for error in form.charisma.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm">
+                                  <div class="card mx-auto", style="width: 20rem;">
+                                      <div class="card-header">
+                                          Traits
+                                      </div>
+                                      <div class="card-body">
+                                          <p>
+                                              {{ form.player_class.label }}<br>
+                                              {{ form.player_class }}<br>
+                                              {% for error in form.player_class.errors %}
+                                                  <span style="color: red;">[{{ error }}]</span>
+                                              {% endfor %}
+                                          </p>
+                                          <p>
+                                              {{ form.player_race.label }}<br>
+                                              {{ form.player_race }}<br>
+                                              {% for error in form.player_race.errors %}
+                                                  <span style="color: red;">[{{ error }}]</span>
+                                              {% endfor %}
+                                          </p>
+                                          <p>
+                                              {{ form.player_alignment.label }}<br>
+                                              {{ form.player_alignment }}<br>
+                                              {% for error in form.player_alignment.errors %}
+                                                  <span style="color: red;">[{{ error }}]</span>
+                                              {% endfor %}
+                                          </p>
+                                      </div>
+                                  </div>
+                                </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
     </form>
 {% endblock %}

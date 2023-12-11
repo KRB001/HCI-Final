@@ -17,6 +17,17 @@ from app.forms import LoginForm, RegistrationForm, CreateCharacterForm
 def home():
     return render_template('index.html', title='Home', user=current_user)
 
+@app.route('/newchar')
+@login_required
+def new_char():
+    found = False
+    next = 1
+    while found is False:
+        if Player.query.filter_by(id=next).first() is None:
+            found = True
+            return redirect("/updatechar/" + str(next))
+        next = next + 1
+
 @app.route('/updatechar/<char_id>', methods=['GET', 'POST'])
 @login_required
 def update_player(char_id):
@@ -24,6 +35,7 @@ def update_player(char_id):
     form = CreateCharacterForm()
     form.player_race.choices = [(r.id, r.name) for r in PlayerRace.query.order_by('name')]
     form.player_class.choices = [(c.id, c.name) for c in PlayerClass.query.order_by('name')]
+    form.player_alignment.choices = [(a.id, a.name) for a in PlayerAlignment.query.order_by('id')]
 
     if character is None:
         print("CHAR DOES NOT EXIST")
@@ -40,6 +52,7 @@ def update_player(char_id):
             )
             character.player_race = int(form.player_race.data)
             character.player_class = int(form.player_class.data)
+            character.player_alignment = int(form.player_alignment.data)
             character.update()
             character.user_id = int(current_user.id)
             db.session.add(character)
@@ -52,6 +65,8 @@ def update_player(char_id):
 
         if form.name.data == None:
             form.name.data = character.name
+            form.gender.data = character.gender
+            form.player_bio.data = character.bio
             form.strength.data = character.str
             form.dexterity.data = character.dex
             form.constitution.data = character.con
@@ -62,9 +77,12 @@ def update_player(char_id):
             form.xp.data = character.xp
             form.player_race.data = character.player_race
             form.player_class.data = character.player_class
+            form.player_alignment.data = character.player_alignment
 
         if form.validate_on_submit():
             character.set_name(form.name.data)
+            character.set_gender(form.gender.data)
+            character.set_bio(form.player_bio.data)
             character.set_str(form.strength.data)
             character.set_dex(form.dexterity.data)
             character.set_con(form.dexterity.data)
@@ -75,6 +93,7 @@ def update_player(char_id):
             character.set_xp(form.xp.data)
             character.set_race(form.player_race.data)
             character.set_class(form.player_class.data)
+            character.set_alignment(form.player_alignment.data)
 
             character.update()
             db.session.commit()
@@ -343,6 +362,41 @@ def reset_db():
 
     for player_race in races:
         db.session.add(player_race)
+
+    db.session.commit()
+
+    alignments = [
+        PlayerAlignment(
+            name="Lawful Good"
+        ),
+        PlayerAlignment(
+            name="Neutral Good"
+        ),
+        PlayerAlignment(
+            name="Chaotic Good"
+        ),
+        PlayerAlignment(
+            name="Lawful Neutral"
+        ),
+        PlayerAlignment(
+            name="True Neutral"
+        ),
+        PlayerAlignment(
+            name="Chaotic Neutral"
+        ),
+        PlayerAlignment(
+            name="Lawful Evil"
+        ),
+        PlayerAlignment(
+            name="Neutral Evil"
+        ),
+        PlayerAlignment(
+            name="Chaotic Evil"
+        ),
+    ]
+
+    for player_alignment in alignments:
+        db.session.add(player_alignment)
 
     db.session.commit()
 
