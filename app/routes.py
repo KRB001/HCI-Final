@@ -146,6 +146,7 @@ def update_player(char_id):
             character.player_alignment = int(form.player_alignment.data)
             character.player_campaign = int(form.campaign.data)
             character.update()
+            character.level_check()
             character.user_id = int(current_user.id)
             db.session.add(character)
             db.session.commit()
@@ -193,7 +194,7 @@ def update_player(char_id):
             character.set_class(form.player_class.data)
             character.set_alignment(form.player_alignment.data)
             character.set_campaign(form.campaign.data)
-
+            character.level_check()
             character.update()
             db.session.commit()
             flash("Character updated!")
