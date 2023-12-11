@@ -31,13 +31,6 @@
                                             {% endfor %}
                                           </p>
                                           <p>
-                                            {{ form.player_bio.label }}<br>
-                                            {{ form.player_bio(size=32) }}<br>
-                                            {% for error in form.player_bio.errors %}
-                                                <span style="color: red;">[{{ error }}]</span>
-                                            {% endfor %}
-                                          </p>
-                                          <p>
                                             {{ form.gender.label }}<br>
                                             {{ form.gender(size=32) }}<br>
                                             {% for error in form.gender.errors %}
@@ -142,6 +135,19 @@
                                           </p>
                                       </div>
                                   </div>
+                                    <div class="container pt-5">
+                                        <div class="card mx-auto", style="width: 20rem;">
+                                            <div class="card-body">
+                                                <p>
+                                                {{ form.player_bio.label }}<br>
+                                                {{ form.player_bio(size=32) }}<br>
+                                                {% for error in form.player_bio.errors %}
+                                                    <span style="color: red;">[{{ error }}]</span>
+                                                {% endfor %}
+                                              </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                           </div>
                     </div>
