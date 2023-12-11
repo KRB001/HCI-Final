@@ -13,5 +13,5 @@ def write_description(bio_prompt):
                         "character and need to write a bio for your character. You are limited to 200 words."},
             {"role": "user",
              "content": bio_prompt}])
-
-    return completion.choices[0].message
+    print(completion.choices[0].message.content)
+    return completion.choices[0].message.content
