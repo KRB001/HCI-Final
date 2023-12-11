@@ -1,5 +1,52 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <!--- hi
+    <div class="container pt-5">
+                <div class="card mx-auto bg-warning-subtle", style="width: 70rem;">
+                    {% if current_user.is_anonymous %}
+                        <div class="card-header">
+                            <h1>Welcome to DUNGEONKEEPER!</h1>
+                        </div>
+                        <div class="card-body">
+                            <h4>
+                                DUNGEONKEEPER is a Dungeons and Dragons character sheet manager that lets you create campaigns,
+                                manage your characters and update their stats in real time. Out of ideas for a character bio?
+                                Try out our character bio generator!
+                            </h4>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ url_for('login') }}">
+                                <button type="button" class="btn btn-primary">Login</button>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="card-header">
+                            <h1>Welcome back to DUNGEONKEEPER!</h1>
+                        </div>
+                        <div class="card-body">
+                            <h4>
+                                Your characters and campaigns are waiting...
+                            </h4>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="container mx-auto">
+                                        <a href="{{ url_for('characters') }}">
+                                            <button type="button" class="btn btn-secondary">Your Characters</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="container mx-auto">
+                                          <a href="{{ url_for('campaigns') }}">
+                                                <button type="button" class="btn btn-secondary">Your Campaigns</button>
+                                          </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+    </div>
 {% endblock %}

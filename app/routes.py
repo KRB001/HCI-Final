@@ -489,7 +489,7 @@ def clear_db():
 
 @app.route('/index')
 def index():
-    return ""
+    return render_template('index.html', title='DUNGEONKEEPER', user=current_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
