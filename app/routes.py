@@ -101,7 +101,10 @@ def update_player(char_id):
     form.player_race.choices = [(r.id, r.name) for r in PlayerRace.query.order_by('name')]
     form.player_class.choices = [(c.id, c.name) for c in PlayerClass.query.order_by('name')]
     form.player_alignment.choices = [(a.id, a.name) for a in PlayerAlignment.query.order_by('id')]
-    form.campaign.choices = [(c.id, c.name) for c in Campaign.query.order_by('name')]
+    form.campaign.choices = []
+    form.campaign.choices.append((Campaign.query.filter_by(id=1).first().id, Campaign.query.filter_by(id=1).first().name))
+    for c in Campaign.query.filter_by(user_id=current_user.id).order_by('name'):
+        form.campaign.choices.append((c.id, c.name))
 
     if character is None:
         print("CHAR DOES NOT EXIST")
@@ -473,6 +476,13 @@ def reset_db():
     for player_alignment in alignments:
         db.session.add(player_alignment)
 
+    db.session.commit()
+
+    default_campaign = Campaign(
+        id=1, name="None", description=" "
+    )
+
+    db.session.add(default_campaign)
     db.session.commit()
 
     print("DB has been reset")
